@@ -9,7 +9,6 @@ part 'application_state.dart';
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc() : super(ApplicationInitial());
 
-  @override
   Stream<ApplicationState> mapEventToState(
     ApplicationEvent event,
   ) async* {

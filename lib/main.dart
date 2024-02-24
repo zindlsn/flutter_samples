@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:start/application.dart';
+import 'package:start/presentation/chatpage/chat_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const Application(
-      start: HomePage(),
+      startPage: ChatPage(),
     ),
   );
 }
