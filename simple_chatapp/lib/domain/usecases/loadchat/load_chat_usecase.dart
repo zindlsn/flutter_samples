@@ -1,11 +1,12 @@
 import 'package:start/domain/entities/chat_entity.dart';
-import 'package:start/domain/entities/message_entity.dart';
+import 'package:start/infrastructure/repositories/chat_repository.dart';
 
 class LoadChatUsecase {
+  ChatRepository chatRepository;
 
-  Future<ChatEntity> loadChatByUserId(String id) {
-    return Future.value(ChatEntity(messages: [
-      MessageEntity(ownerId: "id", text: "Here we go", sentTime: DateTime.now())
-    ]));
+  LoadChatUsecase({required this.chatRepository});
+
+  Future<ChatEntity> loadChatByUserId(String id) async {
+    return await chatRepository.getChatModel(id);
   }
 }

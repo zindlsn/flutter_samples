@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/bloc/application_bloc.dart';
 import 'package:start/application/chat/bloc/chat_bloc.dart';
 import 'package:start/core/constants.dart';
-import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
+import 'package:start/registry.dart';
 
 class Application extends StatelessWidget {
   final Widget startPage;
@@ -14,17 +14,24 @@ class Application extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ApplicationBloc(),
+          create: (context) => registry.get<ApplicationBloc>(),
         ),
         BlocProvider(
-          create: (context) => ChatBloc(chatUsecase: LoadChatUsecase()),
+          create: (context) => registry.get<ChatBloc>(),
         ),
       ],
       child: MaterialApp(
         title: kApplicationName,
         home: SafeArea(child: startPage),
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.light(useMaterial3: true),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+        ),
+        themeMode: ThemeMode.dark,
       ),
     );
   }
