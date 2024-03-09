@@ -7,7 +7,7 @@ import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
 
 import 'load_chat_usecase_test.mocks.dart';
 
-@GenerateMocks([LoadChatUsecase])
+@GenerateMocks([LoadChatMessageUsecase])
 void main() {
   group('LoadChatUsecase', () {
     test('should load chat by chat partner id', () async {

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
 import 'package:start/domain/entities/message_entity.dart';
@@ -30,7 +28,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       BlocProvider.of<MessagesBloc>(context).messages;
                   return ListView.builder(
                     itemCount: messages.length,
-                    reverse: true,
                     itemBuilder: ((context, index) {
                       MessageEntity message = messages[index];
                       return message.sendFromMe
@@ -41,17 +38,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width /
-                                            6 *
-                                            5,
+                                    width: MediaQuery.of(context).size.width /
+                                        6 *
+                                        5,
                                     color: const Color.fromARGB(
                                         255, 124, 111, 111),
                                     child: Align(
                                       alignment: Alignment.topRight,
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(index.toString()),
+                                        child: Text(message.text),
                                       ),
                                     ),
                                   ),
@@ -62,11 +58,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width /
-                                      3 *
-                                      2,
-                                  color:
-                                      const Color.fromARGB(255, 1, 8, 99),
+                                  width:
+                                      MediaQuery.of(context).size.width / 3 * 2,
+                                  color: const Color.fromARGB(255, 1, 8, 99),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Text(message.text),
@@ -88,6 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: () {
                 BlocProvider.of<MessagesBloc>(context)
                     .add(SendMessage(text: "New Message!!!"));
+                BlocProvider.of<MessagesBloc>(context).add(LoadMoreMessage());
               },
             ),
           ),

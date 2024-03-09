@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:start/application/application/bloc/application_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
-import 'package:start/domain/repositories/chat_repository_impl.dart';
+import 'package:start/domain/repositories/message_repository_impl.dart';
 import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
 import 'package:start/domain/usecases/sendmessage/send_chat_message.dart';
 import 'package:start/infrastructure/datasource/chat_remote_datasource.dart';
@@ -18,23 +18,24 @@ void init({required getIt}) {
 }
 
 void initUsecaes() {
-  registry
-      .registerLazySingleton(() => LoadChatUsecase(chatRepository: registry()));
-  registry
-      .registerLazySingleton(() => SendChatMessageUsecase(chatRepository: registry()));
+  registry.registerLazySingleton(
+      () => LoadChatMessageUsecase(chatRepository: registry()));
+  registry.registerLazySingleton(
+      () => SendChatMessageUsecase(chatRepository: registry()));
 }
 
 void initDatasourcesProduction() {
-  registry.registerLazySingleton<ChatRemoteDatasource>(
-      () => ChatRemoteDatasourceImpl());
+  registry
+      .registerLazySingleton<MessageDatasource>(() => MessageDatasourceImpl());
 }
 
 void initRepositories() {
-  registry.registerLazySingleton<ChatRepository>(
+  registry.registerLazySingleton<ChatMessageRepository>(
       () => ChatRepositoryImpl(chatRemoteDatasource: registry()));
 }
 
 void initBlocs() {
   registry.registerFactory(() => ApplicationBloc());
-  registry.registerFactory(() => MessagesBloc());
+  registry.registerFactory(() => MessagesBloc(
+      loadChatUsecase: registry(), sendChatMessageUsecase: registry()));
 }

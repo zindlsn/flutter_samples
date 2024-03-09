@@ -2,7 +2,7 @@ import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/infrastructure/repositories/chat_repository.dart';
 
 class SendChatMessageUsecase {
-  ChatRepository chatRepository;
+  ChatMessageRepository chatRepository;
 
   SendChatMessageUsecase({required this.chatRepository});
 

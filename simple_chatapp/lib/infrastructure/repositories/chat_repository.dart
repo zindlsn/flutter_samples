@@ -1,9 +1,8 @@
 import 'package:start/domain/entities/message_entity.dart';
-import 'package:start/infrastructure/models/chat_model.dart';
 
-abstract class ChatRepository{
+abstract class ChatMessageRepository{
 
-  Future<ChatModel> getChatModel(String id);
+  Future<List<MessageEntity>> loadMessages(String id);
 
   Future<bool> sendChatMessage(MessageEntity messageEntity);
   
