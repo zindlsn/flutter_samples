@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:start/application/application/bloc/application_bloc.dart';
+import 'package:start/application/application/messages/bloc/messages_bloc.dart';
 import 'package:start/application/chat/bloc/chat_bloc.dart';
 import 'package:start/core/constants.dart';
-import 'package:start/registry.dart';
 
 class Application extends StatelessWidget {
   final Widget startPage;
@@ -14,11 +15,14 @@ class Application extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => registry.get<ApplicationBloc>(),
+          create: (context) => GetIt.I.get<ApplicationBloc>(),
         ),
         BlocProvider(
-          create: (context) => registry.get<ChatBloc>(),
+          create: (context) => GetIt.I.get<ChatBloc>(),
         ),
+                BlocProvider(
+          create: (context) => GetIt.I.get<MessagesBloc>(),
+       ),
       ],
       child: MaterialApp(
         title: kApplicationName,
