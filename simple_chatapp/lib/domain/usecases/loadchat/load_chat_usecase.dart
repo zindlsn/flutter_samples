@@ -9,4 +9,8 @@ class LoadChatMessageUsecase {
   Future<List<MessageEntity>> loadChatByUserId({required String id}) async {
     return await chatRepository.loadMessages(id);
   }
+  
+    Future<List<MessageEntity>> loadMoreMessagesByUserId({required String id, required startIndex, required count}) async {
+    return await chatRepository.loadMoreMessagesByUserId(startIndex,count,id);
+  }
 }

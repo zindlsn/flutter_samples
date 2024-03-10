@@ -11,9 +11,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<MessagesBloc>(context).add(LoadMoreMessage());
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -24,51 +26,70 @@ class _ChatScreenState extends State<ChatScreen> {
             child: BlocBuilder<MessagesBloc, MessagesState>(
               builder: (context, state) {
                 if (state is MessagesLoaded) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _scrollToBottom(context);
+                  });
                   List<MessageEntity> messages =
                       BlocProvider.of<MessagesBloc>(context).messages;
-                  return ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: ((context, index) {
-                      MessageEntity message = messages[index];
-                      return message.sendFromMe
-                          ? Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width /
-                                        6 *
-                                        5,
-                                    color: const Color.fromARGB(
-                                        255, 124, 111, 111),
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(message.text),
+                  return RefreshIndicator(
+                    onRefresh: _pullRefresh,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: messages.length,
+                      itemBuilder: ((context, index) {
+                        MessageEntity message = messages[index];
+                        return message.sendFromMe
+                            ? Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          6 *
+                                          5,
+                                      color: const Color.fromARGB(
+                                          255, 124, 111, 111),
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(message.text),
+                                              Text(message.creationDate
+                                                  .toString())
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 3 * 2,
-                                  color: const Color.fromARGB(255, 1, 8, 99),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(message.text),
+                                ],
+                              )
+                            : Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width /
+                                        3 *
+                                        2,
+                                    color: const Color.fromARGB(255, 1, 8, 99),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Column(
+                                        children: [
+                                          Text(message.text),
+                                          Text(message.creationDate.toString())
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                    }),
+                                ],
+                              );
+                      }),
+                    ),
                   );
                 }
                 return const CircularProgressIndicator();
@@ -88,6 +109,18 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _pullRefresh() async {
+    BlocProvider.of<MessagesBloc>(context).add(LoadMoreMessage());
+  }
+
+  void _scrollToBottom(BuildContext context) {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
     );
   }
 }

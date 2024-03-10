@@ -9,69 +9,63 @@ class Test {
     messages.addAll([
       MessageEntity(
         ownerId: "101",
-        text: 'First message',
-        sentTime: DateTime.now(),
+        text: '1',
+        creationDate: DateTime.now().subtract(const Duration(days: 1)),
       )..sendFromMe = false,
       MessageEntity(
         ownerId: me.userId,
-        text:
-            'Second message which is very long, and so an and so an... a.sd fasd fs.',
-        sentTime: DateTime.now(),
+        text: '1_2',
+        creationDate: DateTime.now().subtract(const Duration(days: 2)),
+      )..sendFromMe = true,
+      MessageEntity(
+        ownerId: "101",
+        text: '2',
+        creationDate: DateTime.now().subtract(const Duration(days: 3)),
+      )..sendFromMe = false,
+      MessageEntity(
+        ownerId: me.userId,
+        text: '3',
+        creationDate: DateTime.now().subtract(const Duration(days: 4)),
       )..sendFromMe = true,
       MessageEntity(
         ownerId: "101",
         text: 'First message',
-        sentTime: DateTime.now(),
+        creationDate: DateTime.now().subtract(const Duration(days: 5)),
       )..sendFromMe = false,
       MessageEntity(
         ownerId: me.userId,
-        text:
-            'Second message which is very long, and so an and so an... a.sd fasd fs.',
-        sentTime: DateTime.now(),
+        text: '4',
+        creationDate: DateTime.now().subtract(const Duration(days: 6)),
       )..sendFromMe = true,
       MessageEntity(
         ownerId: "101",
-        text: 'First message',
-        sentTime: DateTime.now(),
+        text: '5',
+        creationDate: DateTime.now().subtract(const Duration(days: 8)),
       )..sendFromMe = false,
       MessageEntity(
         ownerId: me.userId,
-        text:
-            'Second message which is very long, and so an and so an... a.sd fasd fs.',
-        sentTime: DateTime.now(),
+        text: '6',
+        creationDate: DateTime.now().subtract(const Duration(days: 9)),
       )..sendFromMe = true,
       MessageEntity(
         ownerId: "101",
-        text: 'First message',
-        sentTime: DateTime.now(),
+        text: 'F7',
+        creationDate: DateTime.now().subtract(const Duration(days: 1)),
       )..sendFromMe = false,
       MessageEntity(
         ownerId: me.userId,
-        text:
-            'Second message which is very long, and so an and so an... a.sd fasd fs.',
-        sentTime: DateTime.now(),
+        text: 'Second messag8',
+        creationDate: DateTime.now().subtract(const Duration(days: 10)),
       )..sendFromMe = true,
       MessageEntity(
         ownerId: "101",
-        text: 'First message',
-        sentTime: DateTime.now(),
+        text: '9',
+        creationDate: DateTime.now().subtract(const Duration(days: 11)),
       )..sendFromMe = false,
       MessageEntity(
         ownerId: me.userId,
-        text:
-            'Second message which is very long, and so an and so an... a.sd fasd fs.',
-        sentTime: DateTime.now(),
-      )..sendFromMe = true,
-      MessageEntity(
-        ownerId: "101",
-        text: 'First message',
-        sentTime: DateTime.now(),
-      )..sendFromMe = false,
-      MessageEntity(
-        ownerId: me.userId,
-        text:
-            'Second message which is very long, and so an and so an... a.sd fasd fs.',
-        sentTime: DateTime.now(),
+        text: '10',
+        creationDate: DateTime.now().subtract(const Duration(days: 2)),
       )..sendFromMe = true,
     ]);
   }

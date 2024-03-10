@@ -9,11 +9,18 @@ class ChatRepositoryImpl implements ChatMessageRepository {
 
   @override
   Future<List<MessageEntity>> loadMessages(String id) async {
-    return await chatRemoteDatasource.loadMessagesByUserId(id);
+    return await chatRemoteDatasource.loadAllMessagesByUserId(id);
   }
 
   @override
   Future<bool> sendChatMessage(MessageEntity messageEntity) async {
     return await chatRemoteDatasource.sendMessage(messageEntity);
+  }
+
+  @override
+  Future<List<MessageEntity>> loadMoreMessagesByUserId(
+      int lastIndex, int count, String id) async {
+    return await chatRemoteDatasource.loadMoreMessagesByUserId(
+        lastIndex, count, id);
   }
 }

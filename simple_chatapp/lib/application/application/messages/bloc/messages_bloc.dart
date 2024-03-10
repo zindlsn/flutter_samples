@@ -18,8 +18,11 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       : super(MessagesInitial()) {
     Test();
     on<LoadMoreMessage>((state, emit) async {
-    //  messages.clear();
-      messages = await loadChatUsecase.loadChatByUserId(id: "101");
+      //  messages.clear();
+      //messages = await loadChatUsecase.loadChatByUserId(id: "101");
+      List<MessageEntity> ms = await loadChatUsecase.loadMoreMessagesByUserId(
+          startIndex: messages.length - 1, count: 5, id: "101");
+      messages.addAll(ms);
       emit(MessagesLoaded());
     });
 
@@ -28,8 +31,8 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
         MessageEntity(
           ownerId: "101",
           text:
-              "This is a very long message which shold be displayed to the message",
-          sentTime: DateTime.now(),
+              "Locally sent",
+          creationDate: DateTime.now().add(const Duration(seconds: 20)),
         )..sendFromMe = true,
       );
     });
