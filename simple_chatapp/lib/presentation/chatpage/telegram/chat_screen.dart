@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
 import 'package:start/domain/entities/message_entity.dart';
+import 'package:start/presentation/chatpage/telegram/send_message_element.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -96,16 +97,9 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          Align(
+          const Align(
             alignment: Alignment.bottomLeft,
-            child: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                BlocProvider.of<MessagesBloc>(context)
-                    .add(SendMessage(text: "New Message!!!"));
-                BlocProvider.of<MessagesBloc>(context).add(LoadMoreMessage());
-              },
-            ),
+            child: SendMessageElement()
           ),
         ],
       ),

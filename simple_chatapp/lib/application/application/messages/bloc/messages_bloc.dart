@@ -4,6 +4,7 @@ import 'package:start/core/server.dart';
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
 import 'package:start/domain/usecases/sendmessage/send_chat_message.dart';
+import 'package:start/main.dart';
 
 part 'messages_event.dart';
 part 'messages_state.dart';
@@ -18,20 +19,21 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       : super(MessagesInitial()) {
     Test();
     on<LoadMoreMessage>((state, emit) async {
-      //  messages.clear();
       //messages = await loadChatUsecase.loadChatByUserId(id: "101");
-      List<MessageEntity> ms = await loadChatUsecase.loadMoreMessagesByUserId(
-          startIndex: messages.length - 1, count: 5, id: "101");
-      messages.addAll(ms);
+     // List<MessageEntity> ms = await loadChatUsecase.loadMoreMessagesByUserId(
+       //   startIndex: messages.length - 1, count: 5, id: "101");
+      // messages.addAll(ms);
+
+    //  messages.clear();
+      messages = await loadChatUsecase.loadChatByUserId(id: "1ß1");
       emit(MessagesLoaded());
     });
 
     on<SendMessage>((state, emit) {
       sendChatMessageUsecase.sendChatMessage(
         MessageEntity(
-          ownerId: "101",
-          text:
-              "Locally sent",
+          ownerId: me.userId,
+          text: state.text,
           creationDate: DateTime.now().add(const Duration(seconds: 20)),
         )..sendFromMe = true,
       );
