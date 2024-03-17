@@ -12,7 +12,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<MessagesBloc>(context).add(LoadMoreMessage());
@@ -92,15 +92,18 @@ class _ChatScreenState extends State<ChatScreen> {
                       }),
                     ),
                   );
+                } else if (state is FailureMessageLoaded) {
+                  return const Text('No message loaded');
                 }
-                return const CircularProgressIndicator();
+                return const SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator());
               },
             ),
           ),
           const Align(
-            alignment: Alignment.bottomLeft,
-            child: SendMessageElement()
-          ),
+              alignment: Alignment.bottomLeft, child: SendMessageElement()),
         ],
       ),
     );

@@ -1,6 +1,6 @@
 ///Represents a message within the [Chat]
 ///
-class MessageEntity implements Comparable<MessageEntity> {
+class MessageEntity implements Comparable<MessageEntity>  {
   String ownerId;
   String text;
   DateTime? sentTime;

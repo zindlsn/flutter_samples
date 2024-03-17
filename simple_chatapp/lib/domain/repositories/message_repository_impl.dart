@@ -20,7 +20,9 @@ class ChatRepositoryImpl implements ChatMessageRepository {
   @override
   Future<List<MessageEntity>> loadMoreMessagesByUserId(
       int lastIndex, int count, String id) async {
-    return await chatRemoteDatasource.loadMoreMessagesByUserId(
-        lastIndex, count, id);
+    List<MessageEntity> loadedMessages = await chatRemoteDatasource
+        .loadMoreMessagesByUserId(lastIndex, count, id);
+    loadedMessages.sort();
+    return Future.value(loadedMessages);
   }
 }

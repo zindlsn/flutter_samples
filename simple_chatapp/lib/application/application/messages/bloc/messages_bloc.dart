@@ -19,14 +19,14 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       : super(MessagesInitial()) {
     Test();
     on<LoadMoreMessage>((state, emit) async {
-      //messages = await loadChatUsecase.loadChatByUserId(id: "101");
-     // List<MessageEntity> ms = await loadChatUsecase.loadMoreMessagesByUserId(
-       //   startIndex: messages.length - 1, count: 5, id: "101");
-      // messages.addAll(ms);
-
-    //  messages.clear();
-      messages = await loadChatUsecase.loadChatByUserId(id: "1ß1");
-      emit(MessagesLoaded());
+      try {
+        messages = [];
+        messages.addAll(await loadChatUsecase.loadChatByUserId(
+            id: "101"));
+      } on Exception {
+        emit(FailureMessageLoaded());
+      }
+      eMessagesLoaded());
     });
 
     on<SendMessage>((state, emit) {

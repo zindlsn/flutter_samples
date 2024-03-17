@@ -4,4 +4,7 @@ part of 'messages_bloc.dart';
 abstract class MessagesState {}
 
 class MessagesInitial extends MessagesState {}
+
 class MessagesLoaded extends MessagesState {}
+
+class FailureMessageLoaded extends MessagesState {}
