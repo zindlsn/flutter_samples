@@ -26,7 +26,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       } on Exception {
         emit(FailureMessageLoaded());
       }
-      eMessagesLoaded());
+      emit(MessagesLoaded());
     });
 
     on<SendMessage>((state, emit) {

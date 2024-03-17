@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/presentation/chatpage/telegram/send_message_element.dart';
+import 'package:start/presentation/chatpage/telegram/widgets/message_layout.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -48,46 +49,29 @@ class _ChatScreenState extends State<ChatScreen> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
                                       width: MediaQuery.of(context).size.width /
-                                          6 *
-                                          5,
-                                      color: const Color.fromARGB(
-                                          255, 124, 111, 111),
+                                          7 *
+                                          6,
                                       child: Align(
                                         alignment: Alignment.topRight,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(message.text),
-                                              Text(message.creationDate
-                                                  .toString())
-                                            ],
-                                          ),
-                                        ),
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: OutBubble(
+                                              message: message.text,
+                                            )),
                                       ),
                                     ),
                                   ),
                                 ],
                               )
-                            : Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width /
-                                        3 *
-                                        2,
-                                    color: const Color.fromARGB(255, 1, 8, 99),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Column(
-                                        children: [
-                                          Text(message.text),
-                                          Text(message.creationDate.toString())
-                                        ],
-                                      ),
-                                    ),
+                            : SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width / 3 * 2,
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: InBubble(
+                                    message: message.text,
                                   ),
-                                ],
+                                ),
                               );
                       }),
                     ),
@@ -96,9 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   return const Text('No message loaded');
                 }
                 return const SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: CircularProgressIndicator());
+                    width: 25, height: 25, child: CircularProgressIndicator());
               },
             ),
           ),
