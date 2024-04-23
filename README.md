@@ -1,16 +1,14 @@
 # start
 
-A new Flutter project.
+## Goals to learn
 
-## Getting Started
+1) Chat using firebase
+2) Chatoverview
+3) Loading animation
+4) Add Reactions
+4) Realtime chat
+5) Offline usage/ handling with connectifity check 
+    Load and send
+7) Use camera
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://stackoverflow.com/questions/49648022/check-whether-there-is-an-internet-connection-available-on-flutter-app

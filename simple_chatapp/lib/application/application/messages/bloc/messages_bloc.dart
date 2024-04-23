@@ -19,10 +19,15 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       : super(MessagesInitial()) {
     Test();
     on<LoadMoreMessage>((state, emit) async {
+      emit(MessageLoading());
       try {
+        await Future.delayed(
+          const Duration(seconds: 2),
+        );
         messages = [];
-        messages.addAll(await loadChatUsecase.loadChatByUserId(
-            id: "101"));
+        messages.addAll(
+          await loadChatUsecase.loadChatByUserId(id: "101"),
+        );
       } on Exception {
         emit(FailureMessageLoaded());
       }
@@ -34,7 +39,11 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
         MessageEntity(
           ownerId: me.userId,
           text: state.text,
-          creationDate: DateTime.now().add(const Duration(seconds: 20)),
+          chatId: "202",
+          sendFromMe: true,
+          creationDate: DateTime.now().add(
+            const Duration(seconds: 20),
+          ),
         )..sendFromMe = true,
       );
     });

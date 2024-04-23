@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.start.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.start.app-mergeDebugResources-13:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "D:\\flutter_stream_projects\\start\\simple_chatapp\\android\\app\\src\\main\\res\\values-night\\styles.xml",

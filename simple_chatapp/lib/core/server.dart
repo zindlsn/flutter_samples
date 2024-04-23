@@ -6,7 +6,7 @@ class Test {
 
   Test() {
     messages = [];
-    messages.addAll([
+    /* messages.addAll([
       MessageEntity(
         ownerId: "101",
         text: '1',
@@ -67,6 +67,6 @@ class Test {
         text: '10',
         creationDate: DateTime.now().subtract(const Duration(days: 2)),
       )..sendFromMe = true,
-    ]);
+    ]); */
   }
 }

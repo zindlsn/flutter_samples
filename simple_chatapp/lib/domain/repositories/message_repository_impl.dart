@@ -1,15 +1,18 @@
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/infrastructure/datasource/chat_remote_datasource.dart';
+import 'package:start/infrastructure/datasource/firebase_data_source.dart';
 import 'package:start/infrastructure/repositories/chat_repository.dart';
 
 class ChatRepositoryImpl implements ChatMessageRepository {
   MessageDatasource chatRemoteDatasource;
+  FirebaseDataSource firebaseDataSource;
 
-  ChatRepositoryImpl({required this.chatRemoteDatasource});
+  ChatRepositoryImpl(
+      {required this.chatRemoteDatasource, required this.firebaseDataSource});
 
   @override
-  Future<List<MessageEntity>> loadMessages(String id) async {
-    return await chatRemoteDatasource.loadAllMessagesByUserId(id);
+  Future<List<MessageEntity>> loadMessagesByChatId(String id) async {
+    return await firebaseDataSource.loadMessagesByChatId(id);
   }
 
   @override
