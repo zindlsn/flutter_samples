@@ -12,3 +12,7 @@
 7) Use camera
 
 https://stackoverflow.com/questions/49648022/check-whether-there-is-an-internet-connection-available-on-flutter-app
+
+https://www.perplexity.ai/search/flutter-consume-websocket-93Pj7ZbOTFyH2pZ3Bangmg
+
+Angst YT video erstellen, 

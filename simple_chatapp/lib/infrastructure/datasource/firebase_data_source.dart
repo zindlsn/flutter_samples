@@ -1,21 +1,57 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/firebase_options.dart';
 
 class FirebaseDataSource {
-  late FirebaseFirestore _db;
+  late FirebaseFirestore _firestore;
+  late var auth;
   Future init() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    _db = FirebaseFirestore.instance;
-    _db.settings = const Settings(persistenceEnabled: true);
+    _firestore = FirebaseFirestore.instance;
+    auth = FirebaseAuth.instance;
+    _firestore.settings = const Settings(persistenceEnabled: true);
   }
 
-  Future<void> createMessage(MessageEntity newMessage) async {
+  Future<void> updateTypingStatus(bool isTyping, String userId) async {
+    await _firestore
+        .collection('typing')
+        .doc(userId)
+        .set({'isTyping': isTyping, 'userId': userId});
+  }
+
+  List<MessageEntity> subscribeToMessages() {
+    List<MessageEntity> messages = [];
+    _firestore
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      messages = snapshot.docs
+          .map((doc) => MessageEntity.fromMap(doc.data()))
+          .toList();
+    });
+    return messages;
+  }
+
+  Tuple2<bool, String?>? subscribeToTypingStatus() {
+    Tuple2<bool, String?>? typingStatus;
+    _firestore.collection('typing').snapshots().listen((snapshot) {
+      typingStatus = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Tuple2(data['isTyping'] as bool, data['userId'] as String);
+      }).first;
+    });
+
+    return typingStatus;
+  }
+
+  Future<void> sendMessage(MessageEntity newMessage) async {
     try {
-      await _db.collection('messages').add({
+      await _firestore.collection('messages').add({
         'ownerId': newMessage.ownerId,
         'chatId': newMessage.chatId,
         'text': newMessage.text,
@@ -30,7 +66,7 @@ class FirebaseDataSource {
 
   Future<List<MessageEntity>> loadMessagesByChatId(String chatId) async {
     try {
-      QuerySnapshot querySnapshot = await _db
+      QuerySnapshot querySnapshot = await _firestore
           .collection('messages')
           .where('chatId', isEqualTo: "")
           .get();
@@ -55,4 +91,11 @@ class FirebaseDataSource {
       return [];
     }
   }
+}
+
+class Tuple2<T1, T2> {
+  final T1 item1;
+  final T2? item2;
+
+  Tuple2(this.item1, this.item2);
 }

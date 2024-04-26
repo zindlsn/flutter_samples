@@ -1,11 +1,46 @@
 part of 'messages_bloc.dart';
 
 @immutable
-abstract class MessagesState {}
+class MessagesState {
+  final List<MessageEntity> messages;
+  final bool isTyping;
+  final String? typingUserId;
 
-class MessagesInitial extends MessagesState {}
+  const MessagesState({
+    required this.messages,
+    required this.isTyping,
+    this.typingUserId,
+  });
 
-class MessagesLoaded extends MessagesState {}
+  factory MessagesState.initial() {
+    return const MessagesState(
+      messages: [],
+      isTyping: false,
+      typingUserId: null,
+    );
+  }
 
-class FailureMessageLoaded extends MessagesState {}
-class MessageLoading extends MessagesState {}
+  MessagesState copyWith({
+    List<MessageEntity>? messages,
+    bool? isTyping,
+    String? typingUserId,
+  }) {
+    return MessagesState(
+      messages: messages ?? this.messages,
+      isTyping: isTyping ?? this.isTyping,
+      typingUserId: typingUserId ?? this.typingUserId,
+    );
+  }
+}
+
+class MessagesLoaded extends MessagesState {
+  MessagesLoaded({required super.messages, required super.isTyping});
+}
+
+class FailureMessageLoaded extends MessagesState {
+  FailureMessageLoaded({required super.messages, required super.isTyping});
+}
+
+class MessageLoading extends MessagesState {
+  MessageLoading({required super.messages, required super.isTyping});
+}

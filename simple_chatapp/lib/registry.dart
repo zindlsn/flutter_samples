@@ -39,5 +39,7 @@ void initRepositories() {
 void initBlocs() {
   registry.registerFactory(() => ApplicationBloc());
   registry.registerFactory(() => MessagesBloc(
-      loadChatUsecase: registry(), sendChatMessageUsecase: registry()));
+      loadChatUsecase: registry(),
+      sendChatMessageUsecase: registry(),
+      firebaseDataSource: registry()));
 }

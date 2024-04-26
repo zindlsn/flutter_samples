@@ -7,6 +7,8 @@ class ChatRepositoryImpl implements ChatMessageRepository {
   MessageDatasource chatRemoteDatasource;
   FirebaseDataSource firebaseDataSource;
 
+  // final channel = WebSocketChannel.connect(Uri.parse('wss://your-websocket-server.com/chat'));
+
   ChatRepositoryImpl(
       {required this.chatRemoteDatasource, required this.firebaseDataSource});
 

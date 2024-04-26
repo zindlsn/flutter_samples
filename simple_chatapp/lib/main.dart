@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   init();
   await GetIt.instance.get<FirebaseDataSource>().init();
-  await GetIt.instance.get<FirebaseDataSource>().createMessage(MessageEntity(
+  await GetIt.instance.get<FirebaseDataSource>().sendMessage(MessageEntity(
       ownerId: "101", text: "Hello World2", creationDate: DateTime.now(), sendFromMe: false,chatId: ""));
 
   runApp(

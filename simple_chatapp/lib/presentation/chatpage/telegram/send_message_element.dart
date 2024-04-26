@@ -10,7 +10,7 @@ class SendMessageElement extends StatefulWidget {
 }
 
 class _SendMessageElementState extends State<SendMessageElement> {
-      final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _messageController = TextEditingController();
   @override
@@ -20,10 +20,10 @@ class _SendMessageElementState extends State<SendMessageElement> {
       child: TextFormField(
         autovalidateMode: AutovalidateMode.always,
         controller: _messageController,
-        onChanged: (text){
-          setState(() {
-            
-          });
+        onChanged: (text) {
+          BlocProvider.of<MessagesBloc>(context).add(
+            StartTypingEvent("me"),
+          );
         },
         decoration: InputDecoration(
             fillColor: Colors.blue,
