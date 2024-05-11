@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:start/application/application/bloc/application_bloc.dart';
+import 'package:start/application/application/chat/bloc/chat_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
 import 'package:start/domain/repositories/message_repository_impl.dart';
 import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
@@ -38,6 +39,7 @@ void initRepositories() {
 
 void initBlocs() {
   registry.registerFactory(() => ApplicationBloc());
+  registry.registerFactory(() => ChatBloc());
   registry.registerFactory(() => MessagesBloc(
       loadChatUsecase: registry(),
       sendChatMessageUsecase: registry(),

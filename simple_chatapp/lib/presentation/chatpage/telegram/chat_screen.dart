@@ -1,14 +1,9 @@
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.g.dart';
-import 'package:flutter/animation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
-import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/presentation/chatpage/telegram/send_message_element.dart';
-import 'package:start/presentation/chatpage/telegram/widgets/message_layout.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});

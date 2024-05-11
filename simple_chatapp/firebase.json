@@ -5,7 +5,7 @@
                 "default": {
                     "projectId": "simplechatapp-977fa",
                     "appId": "1:563851166700:android:1d5259652bc912e304b6c9",
-                    "fileOutput": "android/app/google-services.json",
+                    "fileOutput": "android/app/google-services.json"
                 }
             },
             "dart": {

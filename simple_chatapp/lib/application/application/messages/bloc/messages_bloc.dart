@@ -25,12 +25,10 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       required this.sendChatMessageUsecase,
       required this.firebaseDataSource})
       : super(MessagesState.initial()) {
-    on<MessagesState>((state, emit) async {});
-
     on<LoadMoreMessage>((state, emit) async {
       emit(MessageLoading(messages: [], isTyping: false));
       await Future.delayed(Duration(seconds: 4));
-      state.copyWith(isTyping: false);
+      //state.copyWith(isTyping: false);
       try {
         await Future.delayed(
           const Duration(seconds: 2),
