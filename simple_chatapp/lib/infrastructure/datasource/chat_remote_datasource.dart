@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:start/core/server.dart';
 import 'package:start/domain/entities/message_entity.dart';
-import 'package:start/infrastructure/models/chat_model.dart';
 
 abstract class MessageDatasource {
   Future<List<MessageEntity>> loadAllMessagesByUserId(String id);

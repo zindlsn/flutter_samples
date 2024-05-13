@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:start/core/server.dart';
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
 import 'package:start/domain/usecases/sendmessage/send_chat_message.dart';
@@ -27,7 +25,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       : super(MessagesState.initial()) {
     on<LoadMoreMessage>((state, emit) async {
       emit(MessageLoading(messages: [], isTyping: false));
-      await Future.delayed(Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 4));
       //state.copyWith(isTyping: false);
       try {
         await Future.delayed(
@@ -74,9 +72,21 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
     StartTypingEvent event,
     Emitter<MessagesState> emit,
   ) async {
+    _timer?.cancel();
+    _secsRemaining = 2;
     await firebaseDataSource.updateTypingStatus(true, event.userId);
     emit(state.copyWith(isTyping: true, typingUserId: event.userId));
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+      if (_secondsRemaining > 0) {
+        _secondsRemaining--;
+      } else {
+        timer.cancel();
+        await firebaseDataSource.updateTypingStatus(false, event.userId);
+      }
+    });
   }
+
+  int _secsRemaining = 2;
 
   Future<void> _onStopTyping(
     StopTypingEvent event,

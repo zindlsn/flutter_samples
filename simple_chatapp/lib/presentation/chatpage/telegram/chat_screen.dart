@@ -3,7 +3,7 @@ import 'package:animated_emoji/emojis.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
-import 'package:start/presentation/chatpage/telegram/send_message_element.dart';
+import 'package:start/presentation/chatpage/telegram/widgets/send_message_element.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});

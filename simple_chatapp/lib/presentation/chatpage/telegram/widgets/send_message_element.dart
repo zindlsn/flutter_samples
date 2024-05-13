@@ -13,6 +13,20 @@ class _SendMessageElementState extends State<SendMessageElement> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _messageController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        BlocProvider.of<MessagesBloc>(context).add(
+          StopTypingEvent("me"),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -20,6 +34,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
       child: TextFormField(
         autovalidateMode: AutovalidateMode.always,
         controller: _messageController,
+        focusNode: _focusNode,
         onChanged: (text) {
           BlocProvider.of<MessagesBloc>(context).add(
             StartTypingEvent("me"),
