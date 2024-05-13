@@ -1,9 +1,4 @@
-import 'dart:ui';
-
-import 'package:animated_emoji/emoji.dart';
-import 'package:animated_emoji/emojis.g.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
 class InBubble extends StatelessWidget {
@@ -189,10 +184,12 @@ class _OutLoadingBubble extends State<OutLoadingBubble>
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
-    animationOne = ColorTween(begin: Colors.grey.shade400, end: Colors.grey.shade100)
-        .animate(_controller);
-    animationTwo = ColorTween(begin: Colors.grey.shade100, end: Colors.grey.shade400)
-        .animate(_controller);
+    animationOne =
+        ColorTween(begin: Colors.grey.shade400, end: Colors.grey.shade100)
+            .animate(_controller);
+    animationTwo =
+        ColorTween(begin: Colors.grey.shade100, end: Colors.grey.shade400)
+            .animate(_controller);
     _controller.forward();
 
     _controller.addListener(() {

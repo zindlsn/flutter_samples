@@ -45,7 +45,5 @@ void _initBlocs() {
   registry.registerFactory(() => ChatBloc());
   registry.registerFactory(() => TypingBloc(firebaseDataSource: registry()));
   registry.registerFactory(() => MessagesBloc(
-      loadChatUsecase: registry(),
-      sendChatMessageUsecase: registry(),
-      firebaseDataSource: registry()));
+      sendChatMessageUsecase: registry(), firebaseDataSource: registry()));
 }

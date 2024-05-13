@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start/application/application/messages/bloc/messages_bloc.dart';
+import 'package:start/application/chat/bloc/chat_bloc.dart';
+import 'package:start/application/typing/bloc/typing_bloc.dart';
+import 'package:start/main.dart';
 
 class SendMessageElement extends StatefulWidget {
   const SendMessageElement({super.key});
@@ -20,9 +23,8 @@ class _SendMessageElementState extends State<SendMessageElement> {
     super.initState();
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        BlocProvider.of<MessagesBloc>(context).add(
-          StopTypingEvent("me"),
-        );
+        BlocProvider.of<TypingBloc>(context)
+            .add(StopTypingEvent(userId: me.userId));
       }
     });
   }
@@ -36,8 +38,8 @@ class _SendMessageElementState extends State<SendMessageElement> {
         controller: _messageController,
         focusNode: _focusNode,
         onChanged: (text) {
-          BlocProvider.of<MessagesBloc>(context).add(
-            StartTypingEvent("me"),
+          BlocProvider.of<TypingBloc>(context).add(
+            StartTypingEvent(userId: me.userId),
           );
         },
         decoration: InputDecoration(
@@ -47,7 +49,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
                 BlocProvider.of<MessagesBloc>(context).add(
                   SendMessage(text: _messageController.text),
                 );
-                BlocProvider.of<MessagesBloc>(context).add(LoadMoreMessage());
+                BlocProvider.of<ChatBloc>(context).add(LoadChat());
               },
               child: _messageController.text.isNotEmpty
                   ? const Icon(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:start/application/application/messages/bloc/messages_bloc.dart';
 import 'package:start/application/chat/bloc/chat_bloc.dart';
 import 'package:start/application/typing/bloc/typing_bloc.dart';
 import 'package:start/presentation/chatpage/telegram/widgets/send_message_element.dart';
@@ -10,7 +9,6 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ChatBloc>(context).add(InitChat());
     BlocProvider.of<ChatBloc>(context).add(LoadChat());
     BlocProvider.of<TypingBloc>(context).add(TypingListeningInit());
     return Scaffold(
@@ -29,7 +27,7 @@ class ChatPage extends StatelessWidget {
                   ),
                 );
               }
-              return Container(child: Text('NO state'));
+              return const Text('No state');
             },
           ),
           BlocBuilder<TypingBloc, TypingState>(
@@ -39,11 +37,7 @@ class ChatPage extends StatelessWidget {
           ),
           BlocBuilder<ChatBloc, ChatState>(
             builder: (context, state) {
-              return Column(
-                children: [
-                  const SendMessageElement(),
-                ],
-              );
+              return const SendMessageElement();
             },
           ),
         ],

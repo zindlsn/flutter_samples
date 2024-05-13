@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:start/infrastructure/datasource/firebase_data_source.dart';
@@ -8,7 +10,8 @@ part 'typing_state.dart';
 
 class TypingBloc extends Bloc<TypingEvent, TypingState> {
   FirebaseDataSource firebaseDataSource;
-
+  Timer? _timer;
+  int _secondsRemaining = 5;
   TypingBloc({required this.firebaseDataSource})
       : super(TypingState(isTyping: false)) {
     on<TypingListeningInit>((event, emit) async {
@@ -31,13 +34,44 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
         // ignore: empty_catches
       } catch (e) {}
     });
+    on<StartTypingEvent>(_onStartTyping);
+    on<StopTypingEvent>(_onStopTyping);
+    on<TypingChanged>((event, emit) {
+      emit(TypingState(isTyping: event.isTyping));
+    });
+  }
+  int _secsRemaining = 2;
+  bool _storeIsTyping = false;
+
+  Future<void> _onStartTyping(
+    StartTypingEvent event,
+    Emitter<TypingState> emit,
+  ) async {
+    _timer?.cancel();
+    _secsRemaining = 2;
+
+    if (!_storeIsTyping) {
+      _storeIsTyping =
+          await firebaseDataSource.updateTypingStatus(true, event.userId);
+    }
+    emit(state.copyWith(isTyping: true));
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+      if (_secondsRemaining > 0) {
+        _secondsRemaining--;
+      } else {
+        timer.cancel();
+        await firebaseDataSource.updateTypingStatus(false, event.userId);
+        _storeIsTyping = false;
+      }
+    });
   }
 
-  @override
-  Stream<TypingState> mapEventToState(TypingEvent event) async* {
-    if (event is TypingChanged) {
-      yield TypingState(isTyping: event.isTyping);
-    }
+  Future<void> _onStopTyping(
+    StopTypingEvent event,
+    Emitter<TypingState> emit,
+  ) async {
+    await firebaseDataSource.updateTypingStatus(false, event.userId);
+    emit(state.copyWith(isTyping: false));
   }
 
   void updateIsTyping(bool value) {

@@ -16,11 +16,12 @@ class FirebaseDataSource {
     firestore.settings = const Settings(persistenceEnabled: true);
   }
 
-  Future<void> updateTypingStatus(bool isTyping, String userId) async {
+  Future<bool> updateTypingStatus(bool isTyping, String userId) async {
     await firestore
         .collection('typing')
         .doc(userId)
         .set({'isTyping': isTyping, 'userId': userId});
+    return true;
   }
 
   List<MessageEntity> subscribeToMessages() {
