@@ -1,19 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:start/core/exexptions/firebase_exeption.dart';
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/firebase_options.dart';
 
 class FirebaseDataSource {
   late FirebaseFirestore firestore;
-  late var auth;
+
   Future init() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     firestore = FirebaseFirestore.instance;
-    auth = FirebaseAuth.instance;
     firestore.settings = const Settings(persistenceEnabled: true);
   }
 
@@ -51,8 +50,10 @@ class FirebaseDataSource {
           return Tuple2(data['isTyping'] as bool, data['userId'] as String);
         }).first;
       });
-    } on Exception catch (ex) {
-      print(ex);
+    } on Exception {
+      if (kDebugMode) {
+        print("Subscibe not working");
+      }
     }
 
     return typingStatus;

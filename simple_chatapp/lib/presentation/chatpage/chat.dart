@@ -5,7 +5,6 @@ import 'package:start/application/typing/bloc/typing_bloc.dart';
 import 'package:start/core/exexptions/string_extension.dart';
 import 'package:start/domain/entities/chat_entity.dart';
 import 'package:start/domain/entities/message_entity.dart';
-import 'package:start/main.dart';
 import 'package:start/presentation/chatpage/telegram/widgets/message_layout.dart';
 import 'package:start/presentation/chatpage/telegram/widgets/send_message_element.dart';
 

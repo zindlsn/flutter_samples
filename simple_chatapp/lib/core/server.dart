@@ -1,5 +1,4 @@
 import 'package:start/domain/entities/message_entity.dart';
-import 'package:start/main.dart';
 
 class Test {
   static late List<MessageEntity> messages;

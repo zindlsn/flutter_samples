@@ -15,6 +15,6 @@ class TypingState {
   }
 }
 
-class IsTypingState extends TypingState {
-  IsTypingState({required super.isTyping});
+final class IsTypingState extends TypingState {
+  const IsTypingState({required super.isTyping});
 }
