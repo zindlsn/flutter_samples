@@ -3,6 +3,9 @@ on: [workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./simple_chatapp
 
     steps:
       - uses: actions/checkout@v2
@@ -12,9 +15,6 @@ jobs:
         with:
           channel: stable
       
-      - name: Change working directory
-        run: cd simple_chatapp
-  
       - name: Install dependencies
         run: flutter pub get
 
