@@ -4,7 +4,7 @@ part of 'typing_bloc.dart';
 class TypingState {
   final bool isTyping;
 
-  TypingState({required this.isTyping});
+  const TypingState({required this.isTyping});
 
   TypingState copyWith({
     required bool isTyping,
@@ -13,4 +13,8 @@ class TypingState {
       isTyping: isTyping,
     );
   }
+}
+
+class IsTypingState extends TypingState {
+  IsTypingState({required super.isTyping});
 }

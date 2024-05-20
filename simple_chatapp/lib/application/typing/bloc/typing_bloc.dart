@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:start/infrastructure/datasource/firebase_data_source.dart';
-import 'package:start/main.dart';
 
 part 'typing_event.dart';
 part 'typing_state.dart';
@@ -15,10 +16,39 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
   TypingBloc({required this.firebaseDataSource})
       : super(TypingState(isTyping: false)) {
     on<TypingListeningInit>((event, emit) async {
-      bool isTyping = false;
       try {
+        Stream<DocumentSnapshot<Map<String, dynamic>>> chatStream =
+            firebaseDataSource.firestore
+                .collection('chats')
+                .doc(event.chatId)
+                .snapshots();
+
+        /*  chatStream.listen((chat) async {
+          var chatData = chat.data();
+          bool isTyping = chatData!['partnerIsTyping'] as bool;
+          await Future.delayed(const Duration(seconds: 2));
+        }); */
+
+        DocumentReference reference =
+            FirebaseFirestore.instance.collection('chats').doc(event.chatId);
+        reference.snapshots().listen((querySnapshot) async {
+          if (kDebugMode) {
+            //  print("Printed:" + querySnapshot.get("partnerIsTyping"));
+          }
+          //  emit(IsTypingState(isTyping: false));
+          //  await emitState(event, emit, querySnapshot);
+        });
+/*
+        DocumentSnapshot<Map<String, dynamic>> chat = await firebaseDataSource
+            .firestore
+            .collection('chats')
+            .doc("V5QCuwyF5ddv9GCzlCBQ")
+            .get();
+
+        var chatData = chat.data();
+        bool isTyping = chatData!['partnerIsTyping'] as bool;
         await for (var snapshot
-            in firebaseDataSource.firestore.collection('typing').snapshots()) {
+            in firebaseDataSource.firestore.collection('chats').snapshots()) {
           final result = snapshot.docs.map((doc) {
             final data = doc.data();
             return Tuple2(data['isTyping'] as bool, data['userId'] as String);
@@ -27,12 +57,10 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
           emit(
             state.copyWith(isTyping: isTyping),
           );
-        }
-        emit(
-          state.copyWith(isTyping: true),
-        );
-        // ignore: empty_catches
-      } catch (e) {}
+        } */
+      } catch (e) {
+        print(e);
+      }
     });
     on<StartTypingEvent>(_onStartTyping);
     on<StopTypingEvent>(_onStopTyping);
@@ -42,6 +70,12 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
   }
   int _secsRemaining = 2;
   bool _storeIsTyping = false;
+
+  Future<void> emitState(TypingListeningInit event, Emitter<TypingState> emit,
+      DocumentSnapshot<Object?> querySnapshot) async {
+    await Future.microtask(() => emit(state.copyWith(
+        isTyping: querySnapshot.get("partnerIsTyping") as bool)));
+  }
 
   Future<void> _onStartTyping(
     StartTypingEvent event,
@@ -77,22 +111,35 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
   void updateIsTyping(bool value) {
     add(TypingChanged(isTyping: value));
   }
-
-  Stream<TypingState> get typingStream => firebaseDataSource.firestore
-          .collection('typing')
-          .snapshots()
-          .map((snapshot) {
-        final typingUsers = snapshot.docs.map((doc) {
-          final data = doc.data();
-          return Tuple2(data['isTyping'] as bool, data['userId'] as String);
-        }).toList();
-        bool isTyping = false;
-        for (var user in typingUsers) {
-          if (user.item1 && user.item2 == me.userId) {
-            isTyping = true;
-            break;
-          }
-        }
-        return TypingState(isTyping: isTyping);
-      });
 }
+
+/* 
+
+class MyBloc extends Bloc<MyEvent, MyState> {
+  StreamSubscription<DocumentSnapshot> _chatSubscription;
+
+  @override
+  Stream<MyState> mapEventToState(MyEvent event) async* {
+    if (event is StartListeningToChat) {
+      final reference =
+          FirebaseFirestore.instance.collection('chats').doc(event.chatId);
+
+      // Cancel any existing subscription before creating a new one
+      await _chatSubscription?.cancel();
+
+      _chatSubscription = reference.snapshots().listen((querySnapshot) {
+        print(querySnapshot.get("partnerIsTyping") as bool);
+        add(ChatUpdated(isPartnerTyping: querySnapshot.get("partnerIsTyping") as bool));
+      });
+    } else if (event is ChatUpdated) {
+      yield state.copyWith(isTyping: event.isPartnerTyping);
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _chatSubscription?.cancel();
+    return super.close();
+  }
+}
+ */

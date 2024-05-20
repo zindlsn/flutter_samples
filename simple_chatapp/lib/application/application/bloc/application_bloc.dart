@@ -11,7 +11,5 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
   Stream<ApplicationState> mapEventToState(
     ApplicationEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
-  }
+  ) async* {}
 }

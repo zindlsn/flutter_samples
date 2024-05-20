@@ -11,3 +11,5 @@ final class ChatLoaded extends ChatState {
   final List<MessageEntity> loadedMessages;
   ChatLoaded({required this.loadedMessages});
 }
+
+final class ChatLoadedFailed extends ChatState{}

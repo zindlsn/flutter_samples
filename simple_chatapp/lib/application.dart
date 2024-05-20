@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:start/application/application/bloc/application_bloc.dart';
 import 'package:start/application/chat/bloc/chat_bloc.dart';
-import 'package:start/application/application/messages/bloc/messages_bloc.dart';
+import 'package:start/application/messages/bloc/messages_bloc.dart';
+import 'package:start/application/chatlist/bloc/chat_list_bloc.dart';
 import 'package:start/application/typing/bloc/typing_bloc.dart';
 import 'package:start/core/constants.dart';
 
@@ -20,6 +21,9 @@ class Application extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => GetIt.I.get<ChatBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => GetIt.I.get<ChatListBloc>(),
         ),
         BlocProvider(
           create: (context) => GetIt.I.get<MessagesBloc>(),

@@ -9,7 +9,10 @@ class TypingChanged extends TypingEvent {
   TypingChanged({required this.isTyping});
 }
 
-class TypingListeningInit extends TypingEvent {}
+class TypingListeningInit extends TypingEvent {
+  String chatId;
+  TypingListeningInit({required this.chatId});
+}
 
 class StartTypingEvent extends TypingEvent {
   String userId;

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:start/core/exexptions/firebase_exeption.dart';
 import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/firebase_options.dart';
 
@@ -41,7 +42,10 @@ class FirebaseDataSource {
   Tuple2<bool, String?>? subscribeToTypingStatus() {
     Tuple2<bool, String?>? typingStatus;
     try {
-      firestore.collection('typing').snapshots().listen((snapshot) {
+      FirebaseFirestore.instance
+          .collection('typing')
+          .snapshots()
+          .listen((snapshot) {
         typingStatus = snapshot.docs.map((doc) {
           final data = doc.data();
           return Tuple2(data['isTyping'] as bool, data['userId'] as String);
@@ -54,9 +58,13 @@ class FirebaseDataSource {
     return typingStatus;
   }
 
-  Future<void> sendMessage(MessageEntity newMessage) async {
+  Future<bool> sendMessage(MessageEntity newMessage) async {
     try {
-      await firestore.collection('messages').add({
+      await firestore
+          .collection('chats')
+          .doc(newMessage.chatId)
+          .collection('messages')
+          .add({
         'ownerId': newMessage.ownerId,
         'chatId': newMessage.chatId,
         'text': newMessage.text,
@@ -64,36 +72,34 @@ class FirebaseDataSource {
         'creationDate': newMessage.creationDate,
         'sendFromMe': newMessage.sendFromMe,
       });
+      return true;
     } catch (e) {
-      print('Error creating message: $e');
+      throw CouldNotSendMessage();
     }
   }
 
   Future<List<MessageEntity>> loadMessagesByChatId(String chatId) async {
     try {
-      QuerySnapshot querySnapshot = await firestore
-          .collection('messages')
-          .where('chatId', isEqualTo: "")
-          .get();
+      CollectionReference<Map<String, dynamic>> refMessages = FirebaseFirestore
+          .instance
+          .collection('chats')
+          .doc(chatId)
+          .collection('messages');
       List<MessageEntity> messages = [];
 
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        MessageEntity message = MessageEntity(
-          ownerId: data['ownerId'],
-          chatId: data['chatId'],
-          text: data['text'],
-          sentTime: data['sentTime'] ?? DateTime.now(),
-          creationDate: (data['creationDate'] as Timestamp).toDate(),
-          sendFromMe: data['sendFromMe'],
-        );
-        messages.add(message);
-      }
+      var documents = await refMessages.orderBy("creationDate").get();
 
+      List<Map<String, dynamic>> allMessagesDocuments =
+          documents.docs.map((doc) => doc.data()).toList();
+      if (allMessagesDocuments.isNotEmpty) {
+        for (Map<String, dynamic> messageDocument in allMessagesDocuments) {
+          var m = MessageEntity.fromMap(messageDocument);
+          messages.add(m);
+        }
+      }
       return messages;
-    } catch (e) {
-      print('Error loading messages: $e');
-      return [];
+    } on Exception {
+      throw CoutNotLoadFirebaseExeption();
     }
   }
 }

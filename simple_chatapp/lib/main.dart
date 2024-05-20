@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:start/application.dart';
-import 'package:start/presentation/chatpage/chat.dart';
+import 'package:start/presentation/chatlist/chat_list.dart';
 import 'package:start/domain/entities/user_entity.dart';
 import 'package:start/registry.dart';
 
@@ -11,25 +11,7 @@ void main() async {
   await initApplication();
   runApp(
     const Application(
-      entryPage: ChatPage(),
+      entryPage: ChatList(),
     ),
   );
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: const Column(
-        children: [
-          Text('Test'),
-        ],
-      ),
-    );
-  }
 }

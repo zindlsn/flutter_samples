@@ -29,12 +29,12 @@ class MessageEntity implements Comparable<MessageEntity> {
 
   factory MessageEntity.fromMap(Map<String, dynamic> map) {
     return MessageEntity(
-      ownerId: map['ownerId'] as String,
+      ownerId: map['ownerId'] ?? "",
       chatId: map['chatId'] as String,
       text: map['text'] as String,
       sentTime: (map['sentTime'] as Timestamp?)?.toDate(),
-      creationDate: (map['creationDate'] as Timestamp).toDate(),
-      sendFromMe: map['sendFromMe'] as bool,
+      creationDate: DateTime.now(),
+      sendFromMe: map['sendFromMe'],
     );
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:start/domain/entities/message_entity.dart';
 
 class InBubble extends StatelessWidget {
-  final String message;
+  final MessageEntity message;
   const InBubble({super.key, required this.message});
 
   @override
@@ -34,7 +35,7 @@ class InBubble extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  message,
+                  message.text,
                   style: const TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
@@ -66,7 +67,7 @@ class InBubbleTriangle extends CustomPainter {
 }
 
 class OutBubble extends StatefulWidget {
-  final String message;
+  final MessageEntity message;
   const OutBubble({super.key, required this.message});
 
   @override
@@ -109,14 +110,16 @@ class _OutBubbleState extends State<OutBubble> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.message,
+                      widget.message.text,
                       style: const TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ],
                 ),
               ),
             ),
-            CustomPaint(painter: Triangle(Colors.indigo.shade600)),
+            CustomPaint(
+              painter: Triangle(Colors.indigo.shade600),
+            ),
           ],
         ),
       ],
@@ -163,7 +166,7 @@ class ReactionFactory {
 }
 
 class OutLoadingBubble extends StatefulWidget {
-  final String message;
+  final MessageEntity message;
   const OutLoadingBubble({super.key, required this.message});
 
   @override
@@ -253,7 +256,7 @@ class _OutLoadingBubble extends State<OutLoadingBubble>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.message,
+                                  widget.message.text,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
@@ -293,7 +296,7 @@ class _OutLoadingBubble extends State<OutLoadingBubble>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.message,
+                                    widget.message.text,
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                   ),
@@ -336,7 +339,7 @@ class _OutLoadingBubble extends State<OutLoadingBubble>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.message,
+                                    widget.message.text,
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                   ),
@@ -378,7 +381,7 @@ class _OutLoadingBubble extends State<OutLoadingBubble>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.message,
+                                  widget.message.text,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
