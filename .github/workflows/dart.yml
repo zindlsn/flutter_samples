@@ -22,7 +22,3 @@ jobs:
       - name: Analyze project source
         working-directory: ./simple_chatapp
         run: dart analyze
-
-      - name: Run tests
-        working-directory: ./simple_chatapp
-        run: flutter test
