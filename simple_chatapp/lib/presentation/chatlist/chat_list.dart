@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start/application/chat/bloc/chat_bloc.dart';
 import 'package:start/application/chatlist/bloc/chat_list_bloc.dart';
+import 'package:start/presentation/chatlist/chatpartner_list_element.dart';
 import 'package:start/presentation/chatpage/chat.dart';
 
 /// Displays all [ChatEntity] partners
@@ -17,6 +19,9 @@ class ChatList extends StatelessWidget {
       body: BlocBuilder<ChatListBloc, ChatListState>(
         builder: (context, state) {
           if (state is ChatListLoaded) {
+            BlocProvider.of<ChatBloc>(context).add(
+              LoadChat(chat: state.chats.first),
+            );
             return GestureDetector(
               onTap: () {
                 {
@@ -29,9 +34,7 @@ class ChatList extends StatelessWidget {
                   );
                 }
               },
-              child: ListTile(
-                title: Text(state.chats.first.name),
-              ),
+              child: ChatPartnerListElement(chatPartner: state.chats.first),
             );
           }
           return const Text('No conversations yet');

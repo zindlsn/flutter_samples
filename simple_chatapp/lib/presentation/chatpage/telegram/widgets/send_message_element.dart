@@ -4,11 +4,13 @@ import 'package:start/application/messages/bloc/messages_bloc.dart';
 import 'package:start/application/chat/bloc/chat_bloc.dart';
 import 'package:start/application/typing/bloc/typing_bloc.dart';
 import 'package:start/core/exexptions/string_extension.dart';
+import 'package:start/domain/entities/chat_entity.dart';
+import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/main.dart';
 
 class SendMessageElement extends StatefulWidget {
-  final String chatId;
-  const SendMessageElement({super.key, required this.chatId});
+  final ChatEntity chat;
+  const SendMessageElement({super.key, required this.chat});
 
   @override
   State<SendMessageElement> createState() => _SendMessageElementState();
@@ -51,15 +53,24 @@ class _SendMessageElementState extends State<SendMessageElement> {
             suffixIcon: GestureDetector(
               onTap: _messageController.text.isNotEmpty
                   ? () {
-                      setState(() {
-                        BlocProvider.of<MessagesBloc>(context).add(
-                          SendMessage(text: _messageController.text),
-                        );
-                        BlocProvider.of<ChatBloc>(context).add(
-                          LoadChat(chatId: widget.chatId),
-                        );
-                        _messageController.text = StringExtension.empty;
-                      });
+                      BlocProvider.of<MessagesBloc>(context).add(
+                        SendMessage(text: _messageController.text),
+                      );
+                      ChatEntity chat = widget.chat;
+                      chat.messages.add(MessageEntity(
+                        ownerId: me.userId,
+                        text: _messageController.text,
+                        chatId: "V5QCuwyF5ddv9GCzlCBQ",
+                        sendFromMe: true,
+                        creationDate: DateTime.now().add(
+                          const Duration(seconds: 20),
+                        ),
+                      )..sendFromMe = true);
+                      BlocProvider.of<ChatBloc>(context).add(
+                        LoadChat(chat: chat),
+                      );
+                      _messageController.text = StringExtension.empty;
+                      setState(() {});
                     }
                   : null,
               child: _messageController.text.isNotEmpty

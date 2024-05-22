@@ -5,6 +5,7 @@ import 'package:start/application/typing/bloc/typing_bloc.dart';
 import 'package:start/core/exexptions/string_extension.dart';
 import 'package:start/domain/entities/chat_entity.dart';
 import 'package:start/domain/entities/message_entity.dart';
+import 'package:start/main.dart';
 import 'package:start/presentation/chatpage/telegram/widgets/message_layout.dart';
 import 'package:start/presentation/chatpage/telegram/widgets/send_message_element.dart';
 
@@ -15,10 +16,10 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TypingBloc>(context).add(
-      TypingListeningInit(chatId: chatPartner.chatId),
+      TypingListeningInit(chatId: chatPartner.chatId,chat: chatPartner,userId: me.userId),
     );
     BlocProvider.of<ChatBloc>(context).add(
-      LoadChat(chatId: chatPartner.chatId),
+      LoadChat(chat: chatPartner),
     );
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +65,7 @@ class ChatPage extends StatelessWidget {
           ),
           BlocBuilder<ChatBloc, ChatState>(
             builder: (context, state) {
-              return SendMessageElement(chatId: chatPartner.chatId);
+              return SendMessageElement(chat: chatPartner);
             },
           ),
         ],

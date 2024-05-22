@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
+import 'package:start/domain/entities/chat_entity.dart';
 import 'package:start/infrastructure/datasource/firebase_data_source.dart';
 
 part 'typing_event.dart';
@@ -13,39 +13,30 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
   FirebaseDataSource firebaseDataSource;
   Timer? _timer;
   int _secondsRemaining = 5;
-  TypingBloc({required this.firebaseDataSource})
-      : super(const TypingState(isTyping: false)) {
+  TypingBloc({required this.firebaseDataSource}) : super(InitTyping()) {
     on<TypingListeningInit>((event, emit) async {});
     on<StartTypingEvent>(_onStartTyping);
     on<StopTypingEvent>(_onStopTyping);
-    on<TypingChanged>((event, emit) {
-      emit(TypingState(isTyping: event.isTyping));
-    });
   }
   bool _storeIsTyping = false;
 
-  Future<void> emitState(TypingListeningInit event, Emitter<TypingState> emit,
-      DocumentSnapshot<Object?> querySnapshot) async {
-    await Future.microtask(() => emit(state.copyWith(
-        isTyping: querySnapshot.get("partnerIsTyping") as bool)));
-  }
-
-  Future<void> _onStartTyping(
+  FutureOr<void> _onStartTyping(
     StartTypingEvent event,
-    Emitter<TypingState> emit,
+    Emitter<IsTypingState> emit,
   ) async {
     _timer?.cancel();
     if (!_storeIsTyping) {
-      _storeIsTyping =
-          await firebaseDataSource.updateTypingStatus(true, event.userId);
+      _storeIsTyping = await firebaseDataSource.updateTypingStatus(
+          true, event.chat.chatId, event.userId);
     }
-    emit(state.copyWith(isTyping: true));
+    emit(IsTypingState(isTyping: true, chat: event.chat, userId: event.userId));
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
       if (_secondsRemaining > 0) {
         _secondsRemaining--;
       } else {
         timer.cancel();
-        await firebaseDataSource.updateTypingStatus(false, event.userId);
+        await firebaseDataSource.deleteTypingDocument(
+            event.chat.chatId, event.userId);
         _storeIsTyping = false;
       }
     });
@@ -53,10 +44,12 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
 
   Future<void> _onStopTyping(
     StopTypingEvent event,
-    Emitter<TypingState> emit,
+    Emitter<IsTypingState> emit,
   ) async {
-    await firebaseDataSource.updateTypingStatus(false, event.userId);
-    emit(state.copyWith(isTyping: false));
+    await firebaseDataSource.updateTypingStatus(
+        false, event.chat.chatId, event.userId);
+    emit(
+        IsTypingState(isTyping: false, chat: event.chat, userId: event.userId));
   }
 
   void updateIsTyping(bool value) {

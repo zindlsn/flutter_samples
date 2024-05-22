@@ -4,12 +4,10 @@ import 'package:start/application/chat/bloc/chat_bloc.dart';
 import 'package:start/application/messages/bloc/messages_bloc.dart';
 import 'package:start/application/chatlist/bloc/chat_list_bloc.dart';
 import 'package:start/application/typing/bloc/typing_bloc.dart';
-import 'package:start/domain/repositories/message_repository_impl.dart';
 import 'package:start/domain/usecases/loadchat/load_chat_usecase.dart';
 import 'package:start/domain/usecases/sendmessage/send_chat_message.dart';
 import 'package:start/infrastructure/datasource/chat_remote_datasource.dart';
 import 'package:start/infrastructure/datasource/firebase_data_source.dart';
-import 'package:start/infrastructure/repositories/chat_repository.dart';
 import 'package:start/infrastructure/repositories/chat_data_service.dart';
 
 GetIt registry = GetIt.instance;
@@ -28,8 +26,7 @@ void _initUsecaes() {
   registry.registerLazySingleton(
       () => LoadChatMessageUsecase(chatRepository: registry()));
   registry.registerLazySingleton(() => FirebaseDataSource());
-  registry.registerLazySingleton(
-      () => SendChatMessageUsecase(chatRepository: registry()));
+  registry.registerLazySingleton(() => SendChatMessageUsecase());
 }
 
 void _initDatasourcesProduction() {
@@ -37,15 +34,10 @@ void _initDatasourcesProduction() {
       .registerLazySingleton<MessageDatasource>(() => MessageDatasourceImpl());
 }
 
-void _initServices() {
-  registry
-      .registerLazySingleton<ChatDataRepository>(() => ChatDataRepository());
-}
+void _initServices() {}
 
 void _initRepositories() {
-  registry.registerLazySingleton<ChatMessageRepository>(() =>
-      ChatRepositoryImpl(
-          chatRemoteDatasource: registry(), firebaseDataSource: registry()));
+  registry.registerLazySingleton(() => ChatRepositoryImpl());
 }
 
 void _initBlocs() {

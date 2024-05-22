@@ -1,11 +1,15 @@
 import 'package:start/domain/entities/chat_entity.dart';
 
-class ChatDataRepository {
-  List<ChatEntity> chats = [
-    ChatEntity(messages: [], chatId: "V5QCuwyF5ddv9GCzlCBQ", name: "Hannah")
-  ];
+class ChatRepositoryImpl {
+  List<ChatEntity> chats = [];
 
   ChatEntity? currentTextingChat;
+
+  void loadChatPartners() {
+    chats = [
+      ChatEntity(messages: [], chatId: "V5QCuwyF5ddv9GCzlCBQ", name: "Hannah")
+    ];
+  }
 
   void setCurrentTextingChat(ChatEntity chat) {
     currentTextingChat = chat;

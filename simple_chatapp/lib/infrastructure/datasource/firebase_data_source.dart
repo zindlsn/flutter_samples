@@ -16,11 +16,29 @@ class FirebaseDataSource {
     firestore.settings = const Settings(persistenceEnabled: true);
   }
 
-  Future<bool> updateTypingStatus(bool isTyping, String userId) async {
+  Future<bool> updateTypingStatus(
+      bool isTyping, String chatId, String userId) async {
     await firestore
+        .collection('chats')
+        .doc(chatId)
         .collection('typing')
         .doc(userId)
-        .set({'isTyping': isTyping, 'userId': userId});
+        .set(
+      {
+        'isTyping': isTyping,
+        'updatedAt': DateTime.now(),
+      },
+    );
+    return true;
+  }
+
+  Future<bool> deleteTypingDocument(String chatId, String userId) async {
+    await firestore
+        .collection('chats')
+        .doc(chatId)
+        .collection('typing')
+        .doc(userId)
+        .delete();
     return true;
   }
 

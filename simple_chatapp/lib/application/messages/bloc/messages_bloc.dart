@@ -15,18 +15,20 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
   MessagesBloc(
       {required this.sendChatMessageUsecase, required this.firebaseDataSource})
       : super(MessageInitial()) {
-    on<SendMessage>((state, emit) async {
-      await firebaseDataSource.sendMessage(
-        MessageEntity(
-          ownerId: me.userId,
-          text: state.text,
-          chatId: "V5QCuwyF5ddv9GCzlCBQ",
-          sendFromMe: true,
-          creationDate: DateTime.now().add(
-            const Duration(seconds: 20),
-          ),
-        )..sendFromMe = true,
-      );
-    });
+    on<SendMessage>(
+      (state, emit) async {
+        await firebaseDataSource.sendMessage(
+          MessageEntity(
+            ownerId: me.userId,
+            text: state.text,
+            chatId: "V5QCuwyF5ddv9GCzlCBQ",
+            sendFromMe: true,
+            creationDate: DateTime.now().add(
+              const Duration(seconds: 20),
+            ),
+          )..sendFromMe = true,
+        );
+      },
+    );
   }
 }

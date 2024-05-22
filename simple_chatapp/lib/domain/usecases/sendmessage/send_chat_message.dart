@@ -1,12 +1,14 @@
+import 'package:get_it/get_it.dart';
 import 'package:start/domain/entities/message_entity.dart';
-import 'package:start/infrastructure/repositories/chat_repository.dart';
+import 'package:start/infrastructure/datasource/firebase_data_source.dart';
 
 class SendChatMessageUsecase {
-  ChatMessageRepository chatRepository;
+  FirebaseDataSource messageRepository =
+      GetIt.instance.get<FirebaseDataSource>();
 
-  SendChatMessageUsecase({required this.chatRepository});
+  SendChatMessageUsecase();
 
   Future<bool> sendChatMessage(MessageEntity messageEntity) async {
-    return await chatRepository.sendChatMessage(messageEntity);
+    return await messageRepository.sendMessage(messageEntity);
   }
 }

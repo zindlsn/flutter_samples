@@ -8,11 +8,12 @@ part 'chat_list_event.dart';
 part 'chat_list_state.dart';
 
 class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
-  final ChatDataRepository dataSerivce =
-      GetIt.instance.get<ChatDataRepository>();
+  final ChatRepositoryImpl chatRepository =
+      GetIt.instance.get<ChatRepositoryImpl>();
   ChatListBloc() : super(ChatListInitial()) {
     on<LoadChatList>((event, emit) {
-      emit(ChatListLoaded(chats: dataSerivce.chats));
+      chatRepository.loadChatPartners();
+      emit(ChatListLoaded(chats: chatRepository.chats));
     });
   }
 }

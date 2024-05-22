@@ -11,15 +11,24 @@ class TypingChanged extends TypingEvent {
 
 final class TypingListeningInit extends TypingEvent {
   final String chatId;
-  TypingListeningInit({required this.chatId});
+  final ChatEntity chat;
+  final String userId;
+  TypingListeningInit(
+      {required this.chatId, required this.chat, required this.userId});
 }
 
 final class StartTypingEvent extends TypingEvent {
+  final String chatId;
+  final ChatEntity chat;
   final String userId;
-  StartTypingEvent({required this.userId});
+  StartTypingEvent(
+      {required this.chatId, required this.chat, required this.userId});
 }
 
 final class StopTypingEvent extends TypingEvent {
+  final String chatId;
+  final ChatEntity chat;
   final String userId;
-  StopTypingEvent({required this.userId});
+  StopTypingEvent(
+      {required this.chatId, required this.chat, required this.userId});
 }
