@@ -27,8 +27,8 @@ class _SendMessageElementState extends State<SendMessageElement> {
     super.initState();
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        BlocProvider.of<TypingBloc>(context)
-            .add(StopTypingEvent(userId: me.userId));
+        BlocProvider.of<TypingBloc>(context).add(StopTypingEvent(
+            userId: me.userId, chatId: widget.chat.chatId, chat: widget.chat));
       }
     });
   }
@@ -44,7 +44,10 @@ class _SendMessageElementState extends State<SendMessageElement> {
         onChanged: (text) {
           setState(() {
             BlocProvider.of<TypingBloc>(context).add(
-              StartTypingEvent(userId: me.userId),
+              StartTypingEvent(
+                  userId: me.userId,
+                  chatId: widget.chat.chatId,
+                  chat: widget.chat),
             );
           });
         },

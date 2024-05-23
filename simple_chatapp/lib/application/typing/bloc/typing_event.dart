@@ -32,3 +32,11 @@ final class StopTypingEvent extends TypingEvent {
   StopTypingEvent(
       {required this.chatId, required this.chat, required this.userId});
 }
+
+final class ChangeIsTyping extends TypingEvent {
+  final bool isTyping;
+  final String chatId;
+  final ChatEntity chat;
+  final String userId;
+  ChangeIsTyping(this.chatId, this.chat, this.userId, {required this.isTyping});
+}

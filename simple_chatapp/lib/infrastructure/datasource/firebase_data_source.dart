@@ -38,7 +38,12 @@ class FirebaseDataSource {
         .doc(chatId)
         .collection('typing')
         .doc(userId)
-        .delete();
+        .set(
+      {
+        'isTyping': false,
+        'updatedAt': DateTime.now(),
+      },
+    );
     return true;
   }
 
@@ -56,25 +61,24 @@ class FirebaseDataSource {
     return messages;
   }
 
-  Tuple2<bool, String?>? subscribeToTypingStatus() {
-    Tuple2<bool, String?>? typingStatus;
+  Stream<List<Tuple2<bool, String?>>> subscribeToTypingStatus() {
     try {
-      FirebaseFirestore.instance
+      return FirebaseFirestore.instance
+          .collection('chats')
+          .doc('V5QCuwyF5ddv9GCzlCBQ')
           .collection('typing')
           .snapshots()
-          .listen((snapshot) {
-        typingStatus = snapshot.docs.map((doc) {
-          final data = doc.data();
-          return Tuple2(data['isTyping'] as bool, data['userId'] as String);
-        }).first;
+          .map((snapshot) {
+        return snapshot.docs.map((doc) {
+          return Tuple2(doc['isTyping'] as bool, "nope");
+        }).toList();
       });
     } on Exception {
       if (kDebugMode) {
         print("Subscibe not working");
       }
     }
-
-    return typingStatus;
+    return Stream.value([]);
   }
 
   Future<bool> sendMessage(MessageEntity newMessage) async {

@@ -16,7 +16,8 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TypingBloc>(context).add(
-      TypingListeningInit(chatId: chatPartner.chatId,chat: chatPartner,userId: me.userId),
+      TypingListeningInit(
+          chatId: chatPartner.chatId, chat: chatPartner, userId: me.userId),
     );
     BlocProvider.of<ChatBloc>(context).add(
       LoadChat(chat: chatPartner),
@@ -26,6 +27,7 @@ class ChatPage extends StatelessWidget {
         title: Text(chatPartner.name),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BlocBuilder<ChatBloc, ChatState>(
             builder: (context, state) {
@@ -55,14 +57,17 @@ class ChatPage extends StatelessWidget {
               );
             },
           ),
-          BlocBuilder<TypingBloc, TypingState>(
-            builder: (context, state) {
-              if (state is IsTypingState) {
+          BlocBuilder<TypingBloc, TypingState>(builder: (context, state) {
+            if (state is IsTypingState) {
+              if (state.isTyping) {
                 return const Text("Is Typing...");
+              } else {
+                return const SizedBox.shrink();
               }
-              return Text(StringExtension.empty);
-            },
-          ),
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
           BlocBuilder<ChatBloc, ChatState>(
             builder: (context, state) {
               return SendMessageElement(chat: chatPartner);
