@@ -9,9 +9,6 @@ class FirebaseDataSource {
   late FirebaseFirestore firestore;
 
   Future init() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
     firestore = FirebaseFirestore.instance;
     firestore.settings = const Settings(persistenceEnabled: true);
   }

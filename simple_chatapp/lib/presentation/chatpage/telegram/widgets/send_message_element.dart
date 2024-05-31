@@ -26,10 +26,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
   void initState() {
     super.initState();
     _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        BlocProvider.of<TypingBloc>(context)
-            .add(StopTypingEvent(userId: me.userId));
-      }
+      if (!_focusNode.hasFocus) {}
     });
   }
 
@@ -42,11 +39,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
         controller: _messageController,
         focusNode: _focusNode,
         onChanged: (text) {
-          setState(() {
-            BlocProvider.of<TypingBloc>(context).add(
-              StartTypingEvent(userId: me.userId),
-            );
-          });
+          setState(() {});
         },
         decoration: InputDecoration(
             fillColor: Colors.blue,

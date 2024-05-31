@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:start/application/application/bloc/application_bloc.dart';
+import 'package:start/application/auth/bloc/auth_bloc.dart';
 import 'package:start/application/chat/bloc/chat_bloc.dart';
+import 'package:start/application/login/bloc/login_bloc.dart';
 import 'package:start/application/messages/bloc/messages_bloc.dart';
 import 'package:start/application/chatlist/bloc/chat_list_bloc.dart';
 import 'package:start/application/typing/bloc/typing_bloc.dart';
@@ -20,10 +22,16 @@ class Application extends StatelessWidget {
           create: (context) => GetIt.I.get<ApplicationBloc>(),
         ),
         BlocProvider(
+          create: (context) => GetIt.I.get<AuthBloc>(),
+        ),
+        BlocProvider(
           create: (context) => GetIt.I.get<ChatBloc>(),
         ),
         BlocProvider(
           create: (context) => GetIt.I.get<ChatListBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => GetIt.I.get<LoginBloc>(),
         ),
         BlocProvider(
           create: (context) => GetIt.I.get<MessagesBloc>(),

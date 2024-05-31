@@ -22,7 +22,7 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
 
   FutureOr<void> _onStartTyping(
     StartTypingEvent event,
-    Emitter<IsTypingState> emit,
+    Emitter<TypingState> emit,
   ) async {
     _timer?.cancel();
     if (!_storeIsTyping) {
@@ -44,7 +44,7 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
 
   Future<void> _onStopTyping(
     StopTypingEvent event,
-    Emitter<IsTypingState> emit,
+    Emitter<TypingState> emit,
   ) async {
     await firebaseDataSource.updateTypingStatus(
         false, event.chat.chatId, event.userId);
