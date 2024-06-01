@@ -9,7 +9,7 @@ import 'package:start/domain/entities/message_entity.dart';
 import 'package:start/main.dart';
 
 class SendMessageElement extends StatefulWidget {
-  final ChatEntity chat;
+  final ChatRoomEntity chat;
   const SendMessageElement({super.key, required this.chat});
 
   @override
@@ -28,7 +28,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
         BlocProvider.of<TypingBloc>(context).add(StopTypingEvent(
-            userId: me.userId, chatId: widget.chat.chatId, chat: widget.chat));
+            userId: me.userId, chatId: widget.chat.chatRoomId, chat: widget.chat));
       }
     });
   }
@@ -46,7 +46,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
             BlocProvider.of<TypingBloc>(context).add(
               StartTypingEvent(
                   userId: me.userId,
-                  chatId: widget.chat.chatId,
+                  chatId: widget.chat.chatRoomId,
                   chat: widget.chat),
             );
           });
@@ -59,7 +59,7 @@ class _SendMessageElementState extends State<SendMessageElement> {
                       BlocProvider.of<MessagesBloc>(context).add(
                         SendMessage(text: _messageController.text),
                       );
-                      ChatEntity chat = widget.chat;
+                      ChatRoomEntity chat = widget.chat;
                       chat.messages.add(MessageEntity(
                         ownerId: me.userId,
                         text: _messageController.text,

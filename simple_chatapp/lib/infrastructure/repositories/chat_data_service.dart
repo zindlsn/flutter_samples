@@ -1,25 +1,29 @@
 import 'package:start/domain/entities/chat_entity.dart';
+import 'package:start/main.dart';
 
 class ChatRepositoryImpl {
-  List<ChatEntity> chats = [];
+  List<ChatRoomEntity> chats = [];
 
-  ChatEntity? currentTextingChat;
+  ChatRoomEntity? currentTextingChat;
 
   void loadChatPartners() {
     chats = [
-      ChatEntity(messages: [], chatId: "V5QCuwyF5ddv9GCzlCBQ", name: "Hannah")
+      ChatRoomEntity(
+          messages: [], chatRoomId: "V5QCuwyF5ddv9GCzlCBQ", name: "Hannah")
+        ..participants.add(me)
+        ..me = me
     ];
   }
 
-  void setCurrentTextingChat(ChatEntity chat) {
+  void setCurrentTextingChat(ChatRoomEntity chat) {
     currentTextingChat = chat;
   }
 
-  void addChat(ChatEntity chat) {
+  void addChat(ChatRoomEntity chat) {
     chats.add(chat);
   }
 
-  ChatEntity retreiveChatByChatId(String chatId) {
-    return chats.where((chat) => chat.chatId == chatId).first;
+  ChatRoomEntity retreiveChatByChatId(String chatId) {
+    return chats.where((chat) => chat.chatRoomId == chatId).first;
   }
 }

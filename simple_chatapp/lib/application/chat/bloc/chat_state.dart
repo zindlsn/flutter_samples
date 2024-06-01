@@ -9,7 +9,7 @@ final class LoadingChat extends ChatState {}
 
 final class ChatLoaded extends ChatState {
   final List<MessageEntity> loadedMessages;
-  final ChatEntity chat;
+  final ChatRoomEntity chat;
   ChatLoaded({required this.loadedMessages, required this.chat});
 }
 

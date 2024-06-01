@@ -9,39 +9,33 @@ class InBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: CustomPaint(
-                  painter: InBubbleTriangle(Colors.white),
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 6 / 7,
+              padding: const EdgeInsets.all(15),
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(19),
+                  bottomRight: Radius.circular(19),
+                  topRight: Radius.circular(19),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 6 / 7,
-                padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(19),
-                    bottomRight: Radius.circular(19),
-                    topRight: Radius.circular(19),
-                  ),
-                ),
-                child: Text(
-                  message.text,
-                  style: const TextStyle(color: Colors.white, fontSize: 15),
-                ),
+              child: Text(
+                message.text,
+                style: const TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
 

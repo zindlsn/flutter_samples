@@ -19,7 +19,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<LoadChat>((event, emit) async {
       try {
         var messages =
-            await firebaseDataSource.loadMessagesByChatId(event.chat.chatId);
+            await firebaseDataSource.loadMessagesByChatId(event.chat.chatRoomId);
         event.chat.messages = messages;
         emit(ChatLoaded(chat: event.chat, loadedMessages: messages));
       } on CoutNotLoadFirebaseExeption {

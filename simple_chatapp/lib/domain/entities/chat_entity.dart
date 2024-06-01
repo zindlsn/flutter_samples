@@ -1,20 +1,23 @@
 import 'dart:typed_data';
 
 import 'package:start/domain/entities/message_entity.dart';
+import 'package:start/domain/entities/user_entity.dart';
 import 'package:uuid/uuid.dart';
 
 ///
 /// Represents a the chatpartner
 ///
-class ChatEntity {
+class ChatRoomEntity {
   late String id;
   List<MessageEntity> messages;
-  String chatId;
+  String chatRoomId;
   String name;
-  Uint8List? profileImage;
+  Uint8List? chatRoomProfileImage;
+  List<ParticipantEntity> participants = [];
+  late ParticipantEntity me;
 
-  ChatEntity(
-      {required this.messages, required this.chatId, required this.name}) {
+  ChatRoomEntity(
+      {required this.messages, required this.chatRoomId, required this.name}) {
     id = const Uuid().v4();
   }
 }

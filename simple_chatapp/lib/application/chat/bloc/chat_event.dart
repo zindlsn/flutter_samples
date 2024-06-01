@@ -6,6 +6,6 @@ sealed class ChatEvent {}
 final class InitChat extends ChatEvent {}
 
 final class LoadChat extends ChatEvent {
-  final ChatEntity chat;
+  final ChatRoomEntity chat;
   LoadChat({required this.chat});
 }

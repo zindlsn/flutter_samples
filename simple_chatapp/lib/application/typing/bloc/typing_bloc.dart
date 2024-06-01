@@ -42,7 +42,7 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
     _timer?.cancel();
     if (!_storeIsTyping) {
       _storeIsTyping = await firebaseDataSource.updateTypingStatus(
-          true, event.chat.chatId, event.userId);
+          true, event.chat.chatRoomId, event.userId);
     }
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
       if (_secondsRemaining > 0) {
@@ -50,7 +50,7 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
       } else {
         timer.cancel();
         await firebaseDataSource.deleteTypingDocument(
-            event.chat.chatId, event.userId);
+            event.chat.chatRoomId, event.userId);
         _storeIsTyping = false;
       }
     });
@@ -61,7 +61,7 @@ class TypingBloc extends Bloc<TypingEvent, TypingState> {
     Emitter<TypingState> emit,
   ) async {
     await firebaseDataSource.updateTypingStatus(
-        false, event.chat.chatId, event.userId);
+        false, event.chat.chatRoomId, event.userId);
   }
 
   void updateIsTyping(bool value) {

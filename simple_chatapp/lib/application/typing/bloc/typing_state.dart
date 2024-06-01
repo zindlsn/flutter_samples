@@ -35,7 +35,7 @@ class TypingState {
 final class InitTyping extends TypingState {}
 
 final class IsTypingState extends TypingState {
-  final ChatEntity chat;
+  final ChatRoomEntity chat;
   final String userId;
   final bool isTyping;
   const IsTypingState(

@@ -8,7 +8,7 @@ class ChatRepositoryImplOld implements ChatMessageRepository {
   final MessageDatasource _chatRemoteDatasource;
   final FirebaseDataSource _firebaseDataSource;
 
-  late List<ChatEntity> chats;
+  late List<ChatRoomEntity> chats;
 
   ChatRepositoryImplOld(
       {required MessageDatasource chatRemoteDatasource, required FirebaseDataSource firebaseDataSource}) : _firebaseDataSource = firebaseDataSource, _chatRemoteDatasource = chatRemoteDatasource;
